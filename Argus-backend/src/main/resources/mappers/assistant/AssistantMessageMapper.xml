@@ -32,7 +32,7 @@
             #{toolMode},
             #{groupId},
             #{content},
-            cast(#{structuredPayload} as jsonb),
+            #{structuredPayload},
             #{createdAt}
         )
     </insert>

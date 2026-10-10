@@ -61,7 +61,7 @@
             #{updatedAt}
         )
         on duplicate key update
-        set session_memory = values(session_memory),
+        session_memory = values(session_memory),
             compact_summary = coalesce(values(compact_summary), compact_summary),
             session_memory_base_message_id = coalesce(
                 values(session_memory_base_message_id),

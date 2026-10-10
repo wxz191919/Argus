@@ -32,7 +32,7 @@
             #{chunk.chunkSummary},
             #{chunk.charStart},
             #{chunk.charEnd},
-            cast(#{chunk.metadataJson} as jsonb),
+            #{chunk.metadataJson},
             #{chunk.createdAt},
             #{chunk.updatedAt}
             )

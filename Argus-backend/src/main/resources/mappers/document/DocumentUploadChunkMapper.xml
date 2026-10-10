@@ -41,7 +41,7 @@
             #{updatedAt}
         )
         on duplicate key update
-        set chunk_size = values(chunk_size),
+        chunk_size = values(chunk_size),
             chunk_hash = values(chunk_hash),
             storage_bucket = values(storage_bucket),
             storage_object_key = values(storage_object_key),

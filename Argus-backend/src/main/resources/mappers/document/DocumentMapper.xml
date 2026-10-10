@@ -22,7 +22,7 @@
                d.preview_text as previewText
         from documents d
         inner join users u on u.id = d.uploader_user_id
-        inner join groups g on g.id = d.group_id
+        inner join argus_groups g on g.id = d.group_id
         inner join group_memberships gm on gm.group_id = d.group_id
         where d.deleted = false
           and g.status = 'ACTIVE'

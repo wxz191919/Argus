@@ -14,7 +14,7 @@
                g.description as "description",
                g.created_at as "createdAt",
                (select count(1) from group_join_requests gjr where gjr.group_id = g.id and gjr.status = 'PENDING') as "pendingRequestCount"
-        from groups g
+        from argus_groups g
         where g.owner_user_id = #{userId}
           and g.status = 'ACTIVE'
         order by g.id
@@ -27,7 +27,7 @@
                g.description as "description",
                g.created_at as "createdAt"
         from group_memberships gm
-                 inner join groups g on g.id = gm.group_id
+                 inner join argus_groups g on g.id = gm.group_id
         where gm.user_id = #{userId}
           and gm.role = 'MEMBER'
           and g.status = 'ACTIVE'
@@ -45,7 +45,7 @@
                u.display_name as "inviterDisplayName",
                gi.status as "status"
         from group_invitations gi
-                 inner join groups g on g.id = gi.group_id
+                 inner join argus_groups g on g.id = gi.group_id
                  inner join users u on u.id = gi.inviter_user_id
         where gi.invitee_user_id = #{inviteeUserId}
           and gi.status = 'PENDING'
@@ -56,7 +56,7 @@
     <select id="selectActiveMembershipRole" resultType="string">
         select gm.role
         from group_memberships gm
-        inner join groups g on g.id = gm.group_id
+        inner join argus_groups g on g.id = gm.group_id
         where gm.user_id = #{userId}
           and gm.group_id = #{groupId}
           and g.status = 'ACTIVE'
@@ -65,7 +65,7 @@
     <select id="countActiveMembership" resultType="long">
         select count(1)
         from group_memberships gm
-        inner join groups g on g.id = gm.group_id
+        inner join argus_groups g on g.id = gm.group_id
         where gm.user_id = #{userId}
           and gm.group_id = #{groupId}
           and g.status = 'ACTIVE'
@@ -74,7 +74,7 @@
     <select id="countMembershipByGroupIdAndUserId" resultType="long">
         select count(1)
         from group_memberships gm
-        inner join groups g on g.id = gm.group_id
+        inner join argus_groups g on g.id = gm.group_id
         where gm.group_id = #{groupId}
           and gm.user_id = #{userId}
           and g.status = 'ACTIVE'
@@ -94,27 +94,7 @@
         where id = #{userId}
     </select>
 
-    <select id="insertGroupReturningId" resultType="long">
-        insert into groups (
-            group_code,
-            group_name,
-            description,
-            owner_user_id,
-            status,
-            created_at,
-            updated_at
-        )
-        values (
-            #{groupCode},
-            #{groupName},
-            #{description},
-            #{ownerUserId},
-            #{status},
-            now(),
-            now()
-        )
-        returning id
-    </select>
+    <!-- 创建群组改用 MyBatis-Plus BaseMapper.insert(Group)，自增主键自动回填 entity.id（MySQL useGeneratedKeys） -->
 
     <insert id="insertMembership">
         insert into group_memberships (
@@ -152,7 +132,11 @@
         )
     </insert>
 
-    <select id="insertPendingInvitationReturningId" resultType="long">
+    <!-- 插入待处理邀请，自增主键回填到 invitation.id（MySQL useGeneratedKeys 替代 PostgreSQL RETURNING） -->
+    <insert id="insertPendingInvitationReturningId"
+            parameterType="com.argus.rag.group.model.entity.GroupInvitation"
+            useGeneratedKeys="true"
+            keyProperty="id">
         insert into group_invitations (
             group_id,
             inviter_user_id,
@@ -169,13 +153,12 @@
             now(),
             now()
         )
-        returning id
-    </select>
+    </insert>
 
     <select id="selectInvitationById" resultType="com.argus.rag.group.model.entity.GroupInvitation">
         select gi.id, gi.group_id, gi.inviter_user_id, gi.invitee_user_id, gi.status
         from group_invitations gi
-        inner join groups g on g.id = gi.group_id
+        inner join argus_groups g on g.id = gi.group_id
         where gi.id = #{invitationId}
           and g.status = 'ACTIVE'
     </select>
@@ -196,7 +179,7 @@
                gm.role as "role"
         from group_memberships gm
         inner join users u on u.id = gm.user_id
-        inner join groups g on g.id = gm.group_id
+        inner join argus_groups g on g.id = gm.group_id
         where gm.group_id = #{groupId}
           and g.status = 'ACTIVE'
         order by case when gm.role = 'OWNER' then 0 else 1 end, gm.id
@@ -212,7 +195,7 @@
                gi.created_at as "createdAt",
                gi.decided_at as "decidedAt"
         from group_invitations gi
-                 inner join groups g on g.id = gi.group_id
+                 inner join argus_groups g on g.id = gi.group_id
                  inner join users u on u.id = gi.invitee_user_id
         where gi.inviter_user_id = #{inviterUserId}
         order by gi.created_at desc

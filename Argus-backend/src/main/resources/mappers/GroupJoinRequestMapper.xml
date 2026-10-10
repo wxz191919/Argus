@@ -6,7 +6,7 @@
 
     <select id="selectActiveGroupByCode" resultType="com.argus.rag.group.model.entity.Group">
         select id, group_code, group_name
-        from groups
+        from argus_groups
         where group_code = #{groupCode}
           and status = 'ACTIVE'
     </select>
@@ -14,7 +14,7 @@
     <select id="countActiveMembership" resultType="long">
         select count(1)
         from group_memberships gm
-        inner join groups g on g.id = gm.group_id
+        inner join argus_groups g on g.id = gm.group_id
         where gm.group_id = #{groupId}
           and gm.user_id = #{userId}
           and g.status = 'ACTIVE'
@@ -36,23 +36,7 @@
           and status = 'PENDING'
     </select>
 
-    <select id="insertPendingJoinRequestReturningId" resultType="long">
-        insert into group_join_requests (
-            group_id,
-            applicant_user_id,
-            status,
-            created_at,
-            updated_at
-        )
-        values (
-            #{groupId},
-            #{applicantUserId},
-            #{status},
-            now(),
-            now()
-        )
-        returning id
-    </select>
+    <!-- 插入加入申请改用 MyBatis-Plus BaseMapper.insert(GroupJoinRequest)，自增主键自动回填 entity.id -->
 
     <select id="selectMyJoinRequests" resultType="com.argus.rag.group.model.vo.MyJoinRequestResponse">
         select gjr.id as "requestId",
@@ -63,7 +47,7 @@
                gjr.created_at as "createdAt",
                gjr.decided_at as "decidedAt"
         from group_join_requests gjr
-        inner join groups g on g.id = gjr.group_id
+        inner join argus_groups g on g.id = gjr.group_id
         where gjr.applicant_user_id = #{applicantUserId}
           and g.status = 'ACTIVE'
         order by gjr.created_at desc, gjr.id desc
@@ -79,7 +63,7 @@
                gjr.created_at as "createdAt"
         from group_join_requests gjr
         inner join users u on u.id = gjr.applicant_user_id
-        inner join groups g on g.id = gjr.group_id
+        inner join argus_groups g on g.id = gjr.group_id
         where gjr.group_id = #{groupId}
           and gjr.status = 'PENDING'
           and g.status = 'ACTIVE'
@@ -89,7 +73,7 @@
     <select id="selectJoinRequestById" resultType="com.argus.rag.group.model.entity.GroupJoinRequest">
         select gjr.id, gjr.group_id, gjr.applicant_user_id, gjr.status
         from group_join_requests gjr
-        inner join groups g on g.id = gjr.group_id
+        inner join argus_groups g on g.id = gjr.group_id
         where gjr.id = #{requestId}
           and g.status = 'ACTIVE'
     </select>

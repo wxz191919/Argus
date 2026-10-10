@@ -40,8 +40,7 @@ public interface GroupMembershipMapper extends BaseMapper<Group> {
     /** 统计指定用户 ID 对应的用户数量（用于校验用户是否存在） */
     Long countUserById(@Param("userId") Long userId);
 
-    /** 插入群组并返回自增主键 */
-    Long insertGroupReturningId(@Param("groupCode") String groupCode, @Param("groupName") String groupName, @Param("description") String description, @Param("ownerUserId") Long ownerUserId, @Param("status") String status);
+    /** 插入群组：使用 MyBatis-Plus BaseMapper.insert(Group)，自增主键自动回填 entity.id */
 
     /** 插入成员关系记录 */
     int insertMembership(@Param("groupId") Long groupId, @Param("userId") Long userId, @Param("role") String role);
@@ -49,8 +48,8 @@ public interface GroupMembershipMapper extends BaseMapper<Group> {
     /** 插入待处理邀请记录 */
     int insertPendingInvitation(@Param("groupId") Long groupId, @Param("inviterUserId") Long inviterUserId, @Param("inviteeUserId") Long inviteeUserId, @Param("status") String status);
 
-    /** 插入待处理邀请并返回自增主键 */
-    Long insertPendingInvitationReturningId(@Param("groupId") Long groupId, @Param("inviterUserId") Long inviterUserId, @Param("inviteeUserId") Long inviteeUserId, @Param("status") String status);
+    /** 插入待处理邀请记录，自增主键回填到 invitation.id（MySQL useGeneratedKeys） */
+    int insertPendingInvitationReturningId(GroupInvitation invitation);
 
     /** 根据 ID 查询邀请记录 */
     GroupInvitation selectInvitationById(@Param("invitationId") Long invitationId);

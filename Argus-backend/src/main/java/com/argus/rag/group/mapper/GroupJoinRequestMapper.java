@@ -28,8 +28,7 @@ public interface GroupJoinRequestMapper extends BaseMapper<GroupJoinRequest> {
     /** 统计指定群组中指定用户的待处理加入申请数 */
     Long countPendingJoinRequest(@Param("groupId") Long groupId, @Param("userId") Long userId);
 
-    /** 插入待处理加入申请并返回自增主键 */
-    Long insertPendingJoinRequestReturningId(@Param("groupId") Long groupId, @Param("applicantUserId") Long applicantUserId, @Param("status") String status);
+    /** 插入加入申请：使用 MyBatis-Plus BaseMapper.insert(GroupJoinRequest)，自增主键自动回填 entity.id */
 
     /** 查询当前用户的所有加入申请列表 */
     List<MyJoinRequestResponse> selectMyJoinRequests(@Param("applicantUserId") Long applicantUserId);

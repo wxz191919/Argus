@@ -115,6 +115,14 @@
             <version>3.5.15</version>
         </dependency>
 
+        <!-- 业务主库：MySQL 8.0+ -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- 向量库：PostgreSQL + pgvector（业务库迁移 MySQL 后仅承载向量存储） -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

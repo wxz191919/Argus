@@ -51,11 +51,12 @@ public class GroupJoinRequestService {
         if (hasRows(groupJoinRequestMapper.countPendingJoinRequest(group.groupId(), currentUser.userId()))) {
             throw new BusinessException("该用户已有待处理加入申请，请先等待审批");
         }
-        Long requestId = groupJoinRequestMapper.insertPendingJoinRequestReturningId(
-                group.groupId(),
-                currentUser.userId(),
-                GroupJoinRequestStatus.PENDING.name()
-        );
+        GroupJoinRequest joinRequest = new GroupJoinRequest();
+        joinRequest.setGroupId(group.groupId());
+        joinRequest.setApplicantUserId(currentUser.userId());
+        joinRequest.setStatus(GroupJoinRequestStatus.PENDING);
+        groupJoinRequestMapper.insert(joinRequest);
+        Long requestId = joinRequest.getId();
         log.info("提交加入申请: userId={}, groupId={}, requestId={}", currentUser.userId(), group.groupId(), requestId);
         return requestId;
     }

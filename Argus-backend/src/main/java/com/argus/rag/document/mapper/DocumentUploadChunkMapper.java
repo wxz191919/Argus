@@ -21,7 +21,7 @@ import java.util.List;
 public interface DocumentUploadChunkMapper extends BaseMapper<DocumentUploadChunkEntity> {
 
     /**
-     * 插入或更新分片记录（PostgreSQL ON CONFLICT Upsert）。
+     * 插入或更新分片记录（MySQL ON DUPLICATE KEY UPDATE Upsert，依赖 uq_upload_chunk 唯一键）。
      * 如果相同 uploadId + chunkIndex 的记录已存在则更新，
      * 用于支持分片重传场景。
      *

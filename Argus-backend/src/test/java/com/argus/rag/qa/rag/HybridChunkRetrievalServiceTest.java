@@ -3,6 +3,7 @@ package com.argus.rag.qa.rag;
 import com.argus.rag.document.mapper.DocumentMapper;
 import com.argus.rag.engine.elasticsearch.ElasticsearchChunkIndexService;
 import com.argus.rag.engine.pgvector.PgVectorRetrievalAdapter;
+import com.argus.rag.engine.youcom.YoucomSearchService;
 import com.argus.rag.ingestion.mapper.DocumentChunkMapper;
 import com.argus.rag.ingestion.model.entity.DocumentChunkEntity;
 import com.argus.rag.qa.model.QueryPlanResult;
@@ -35,6 +36,9 @@ class HybridChunkRetrievalServiceTest {
     private ElasticsearchChunkIndexService elasticsearchChunkIndexService;
 
     @Mock
+    private YoucomSearchService youcomSearchService;
+
+    @Mock
     private DocumentChunkMapper documentChunkMapper;
 
     @Mock
@@ -50,6 +54,7 @@ class HybridChunkRetrievalServiceTest {
         HybridChunkRetrievalService service = new HybridChunkRetrievalService(
                 vectorRetrievalAdapter,
                 elasticsearchChunkIndexService,
+                youcomSearchService,
                 documentChunkMapper,
                 queryPlanningService,
                 documentMapper,
@@ -131,6 +136,7 @@ class HybridChunkRetrievalServiceTest {
         HybridChunkRetrievalService service = new HybridChunkRetrievalService(
                 vectorRetrievalAdapter,
                 elasticsearchChunkIndexService,
+                youcomSearchService,
                 documentChunkMapper,
                 queryPlanningService,
                 documentMapper,

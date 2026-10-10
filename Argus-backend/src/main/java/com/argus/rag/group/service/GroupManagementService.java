@@ -7,6 +7,7 @@ import com.argus.rag.common.enums.GroupStatus;
 import com.argus.rag.common.exception.BusinessException;
 import com.argus.rag.group.mapper.GroupJoinRequestMapper;
 import com.argus.rag.group.mapper.GroupMembershipMapper;
+import com.argus.rag.group.model.entity.Group;
 import com.argus.rag.group.model.entity.GroupInvitation;
 import com.argus.rag.group.model.dto.CreateGroupRequest;
 import com.argus.rag.group.model.dto.CreateInvitationRequest;
@@ -52,13 +53,14 @@ public class GroupManagementService {
         CurrentUserService.CurrentUser currentUser = currentUserService.requireBusinessUser();
         String groupName = requireGroupName(createGroupRequest.name());
         String description = normalizeDescription(createGroupRequest.description());
-        Long groupId = groupMembershipMapper.insertGroupReturningId(
-                buildGroupCode(),
-                groupName,
-                description,
-                currentUser.userId(),
-                GroupStatus.ACTIVE.name()
-        );
+        Group group = new Group();
+        group.setGroupCode(buildGroupCode());
+        group.setGroupName(groupName);
+        group.setDescription(description);
+        group.setOwnerUserId(currentUser.userId());
+        group.setStatus(GroupStatus.ACTIVE);
+        groupMembershipMapper.insert(group);
+        Long groupId = group.getId();
         groupMembershipMapper.insertMembership(groupId, currentUser.userId(), GroupRole.OWNER.name());
         log.info("创建群组成功: groupId={}, groupName={}, ownerUserId={}", groupId, groupName, currentUser.userId());
         return groupId;
@@ -72,12 +74,13 @@ public class GroupManagementService {
         CurrentUserService.CurrentUser currentUser = groupMembershipService.requireGroupOwner(requiredGroupId);
         rejectMissingUser(inviteeUserId);
         rejectDuplicateInvitationTarget(requiredGroupId, inviteeUserId);
-        Long invitationId = groupMembershipMapper.insertPendingInvitationReturningId(
-                requiredGroupId,
-                currentUser.userId(),
-                inviteeUserId,
-                GroupInvitationStatus.PENDING.name()
-        );
+        GroupInvitation invitation = new GroupInvitation();
+        invitation.setGroupId(requiredGroupId);
+        invitation.setInviterUserId(currentUser.userId());
+        invitation.setInviteeUserId(inviteeUserId);
+        invitation.setStatus(GroupInvitationStatus.PENDING);
+        groupMembershipMapper.insertPendingInvitationReturningId(invitation);
+        Long invitationId = invitation.getId();
         log.info("创建群组邀请: groupId={}, inviterUserId={}, inviteeUserId={}, invitationId={}",
                 requiredGroupId, currentUser.userId(), inviteeUserId, invitationId);
         return invitationId;

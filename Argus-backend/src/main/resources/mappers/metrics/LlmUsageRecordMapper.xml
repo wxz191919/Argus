@@ -39,12 +39,12 @@
                 ELSE 0
             END AS successRate,
             COALESCE(AVG(latency_ms), 0) AS avgLatencyMs,
-            CASE WHEN EXTRACT(EPOCH FROM (MAX(created_at) - MIN(created_at))) > 0
-                THEN ROUND(COUNT(*) * 60.0 / EXTRACT(EPOCH FROM (MAX(created_at) - MIN(created_at))), 2)
+            CASE WHEN TIMESTAMPDIFF(SECOND, MIN(created_at), MAX(created_at)) > 0
+                THEN ROUND(COUNT(*) * 60.0 / TIMESTAMPDIFF(SECOND, MIN(created_at), MAX(created_at)), 2)
                 ELSE COUNT(*)
             END AS avgRpm,
-            CASE WHEN EXTRACT(EPOCH FROM (MAX(created_at) - MIN(created_at))) > 0
-                THEN ROUND(SUM(total_tokens) * 60.0 / EXTRACT(EPOCH FROM (MAX(created_at) - MIN(created_at))), 2)
+            CASE WHEN TIMESTAMPDIFF(SECOND, MIN(created_at), MAX(created_at)) > 0
+                THEN ROUND(SUM(total_tokens) * 60.0 / TIMESTAMPDIFF(SECOND, MIN(created_at), MAX(created_at)), 2)
                 ELSE COALESCE(SUM(total_tokens), 0)
             END AS avgTpm
         FROM llm_usage_records
@@ -60,7 +60,7 @@
     <!-- 每日趋势统计 -->
     <select id="selectDailyTrend" resultType="com.argus.rag.metrics.model.vo.MetricsOverviewVO$DailyStats">
         SELECT
-            TO_CHAR(created_at, 'YYYY-MM-DD') AS date,
+            DATE_FORMAT(created_at, '%Y-%m-%d') AS date,
             COUNT(*) AS requests,
             COALESCE(SUM(total_tokens), 0) AS tokens,
             COALESCE(SUM(cost_amount), 0) AS cost
@@ -69,7 +69,7 @@
         <if test="module != null and module != ''">
             AND module = #{module}
         </if>
-        GROUP BY TO_CHAR(created_at, 'YYYY-MM-DD')
+        GROUP BY DATE_FORMAT(created_at, '%Y-%m-%d')
         ORDER BY date ASC
     </select>
 
@@ -98,7 +98,7 @@
             COALESCE(SUM(r.total_tokens), 0) AS totalTokens,
             COALESCE(SUM(r.cost_amount), 0) AS totalCost
         FROM llm_usage_records r
-        LEFT JOIN groups g ON g.id = r.group_id
+        LEFT JOIN argus_groups g ON g.id = r.group_id
         WHERE r.created_at >= #{startTime}
           AND r.group_id IS NOT NULL
         GROUP BY r.group_id, g.group_name

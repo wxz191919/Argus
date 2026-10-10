@@ -40,13 +40,13 @@
             #{createdAt},
             #{updatedAt}
         )
-        on conflict (upload_id, chunk_index) do update
-        set chunk_size = excluded.chunk_size,
-            chunk_hash = excluded.chunk_hash,
-            storage_bucket = excluded.storage_bucket,
-            storage_object_key = excluded.storage_object_key,
-            uploaded_at = excluded.uploaded_at,
-            updated_at = excluded.updated_at
+        on duplicate key update
+        set chunk_size = values(chunk_size),
+            chunk_hash = values(chunk_hash),
+            storage_bucket = values(storage_bucket),
+            storage_object_key = values(storage_object_key),
+            uploaded_at = values(uploaded_at),
+            updated_at = values(updated_at)
     </insert>
 
     <select id="selectByUploadId" resultMap="documentUploadChunkEntityMap">

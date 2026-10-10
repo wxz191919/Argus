@@ -60,32 +60,32 @@
             coalesce(#{contextVersion}, 0),
             #{updatedAt}
         )
-        on conflict (session_id) do update
-        set session_memory = excluded.session_memory,
-            compact_summary = coalesce(excluded.compact_summary, assistant_session_contexts.compact_summary),
+        on duplicate key update
+        set session_memory = values(session_memory),
+            compact_summary = coalesce(values(compact_summary), compact_summary),
             session_memory_base_message_id = coalesce(
-                excluded.session_memory_base_message_id,
-                assistant_session_contexts.session_memory_base_message_id
+                values(session_memory_base_message_id),
+                session_memory_base_message_id
             ),
             session_memory_range_end_message_id = coalesce(
-                excluded.session_memory_range_end_message_id,
-                assistant_session_contexts.session_memory_range_end_message_id
+                values(session_memory_range_end_message_id),
+                session_memory_range_end_message_id
             ),
             compact_summary_base_message_id = coalesce(
-                excluded.compact_summary_base_message_id,
-                assistant_session_contexts.compact_summary_base_message_id
+                values(compact_summary_base_message_id),
+                compact_summary_base_message_id
             ),
             compact_summary_range_end_message_id = coalesce(
-                excluded.compact_summary_range_end_message_id,
-                assistant_session_contexts.compact_summary_range_end_message_id
+                values(compact_summary_range_end_message_id),
+                compact_summary_range_end_message_id
             ),
-            summary_text = coalesce(excluded.summary_text, assistant_session_contexts.summary_text),
+            summary_text = coalesce(values(summary_text), summary_text),
             source_message_id = coalesce(
-                excluded.source_message_id,
-                assistant_session_contexts.source_message_id
+                values(source_message_id),
+                source_message_id
             ),
-            context_version = coalesce(excluded.context_version, assistant_session_contexts.context_version),
-            updated_at = excluded.updated_at
+            context_version = coalesce(values(context_version), context_version),
+            updated_at = values(updated_at)
     </insert>
 
     <update id="updateShortTermMemoryWithVersion">

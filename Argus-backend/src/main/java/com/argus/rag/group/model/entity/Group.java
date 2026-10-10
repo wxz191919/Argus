@@ -9,9 +9,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 群组实体，映射 groups 表。
+ * 群组实体，映射 argus_groups 表（原表名 groups，因 MySQL 8.0 保留字冲突更名）。
  */
-@TableName("groups")
+@TableName("argus_groups")
 @Data
 public class Group {
 

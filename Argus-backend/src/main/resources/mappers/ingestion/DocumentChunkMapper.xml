@@ -49,7 +49,7 @@
                chunk_summary as chunkSummary,
                char_start as charStart,
                char_end as charEnd,
-               metadata_json::text as metadataJson,
+               metadata_json as metadataJson,
                created_at as createdAt,
                updated_at as updatedAt
         from document_chunks
@@ -66,7 +66,7 @@
                chunks.chunk_summary as chunkSummary,
                chunks.char_start as charStart,
                chunks.char_end as charEnd,
-               chunks.metadata_json::text as metadataJson,
+               chunks.metadata_json as metadataJson,
                chunks.created_at as createdAt,
                chunks.updated_at as updatedAt
         from document_chunks chunks

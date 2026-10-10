@@ -1,6 +1,7 @@
 package com.argus.rag.common.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -67,7 +68,11 @@ public class DataSourceConfiguration {
      */
     @Bean(name = "vectorDataSource")
     @ConfigurationProperties("argus.vector.datasource.hikari")
-    public HikariDataSource vectorDataSource(DataSourceProperties vectorDataSourceProperties) {
+    public HikariDataSource vectorDataSource(
+            // 显式按名注入：主库 DataSourceProperties 标记了 @Primary，
+            // 若不指定 Qualifier，Spring 会优先注入 primary（MySQL）属性，
+            // 导致向量池错误地连接 MySQL（按参数名匹配不会覆盖 @Primary）。
+            @Qualifier("vectorDataSourceProperties") DataSourceProperties vectorDataSourceProperties) {
         return vectorDataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
 }

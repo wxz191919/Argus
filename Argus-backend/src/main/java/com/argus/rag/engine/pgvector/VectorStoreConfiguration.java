@@ -2,6 +2,7 @@ package com.argus.rag.engine.pgvector;
 
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,7 +42,10 @@ public class VectorStoreConfiguration {
      * 与主库（MySQL）的 MyBatis-Plus 数据访问完全隔离。
      */
     @Bean
-    public JdbcTemplate vectorJdbcTemplate(DataSource vectorDataSource) {
+    public JdbcTemplate vectorJdbcTemplate(
+            // 显式按名注入 vectorDataSource（PostgreSQL）：主数据源标记了 @Primary，
+            // 不加 Qualifier 时 Spring 按类型注入会优先选择 primary（MySQL）。
+            @Qualifier("vectorDataSource") DataSource vectorDataSource) {
         return new JdbcTemplate(vectorDataSource);
     }
 

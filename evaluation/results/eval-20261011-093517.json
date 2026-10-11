@@ -1,0 +1,948 @@
+{
+ "summary": {
+  "timestamp": "2026-10-11 09:35:17",
+  "config": {
+   "chunking": "target 240 / max 320 / overlap 32",
+   "top_k": "vector 10 / keyword 10",
+   "evidence_max": 6,
+   "score_threshold": 0.3,
+   "embedding": "text-embedding-v3(512)",
+   "llm": "qwen-plus"
+  },
+  "metrics": {
+   "retrieval_hit_rate": 1.0,
+   "MRR": 0.942,
+   "answer_keyword_accuracy": 0.8478,
+   "refusal_correct_rate": 1.0,
+   "permission_leak_rate": 0.0,
+   "permission_refusal_rate": 1.0
+  },
+  "latency": {
+   "p50": 1.89,
+   "p95": 3.72,
+   "mean": 2.12
+  }
+ },
+ "results": [
+  {
+   "id": 1,
+   "category": "fact",
+   "question": "Argus 平台当前的版本号是多少？",
+   "latency": 1.41,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 2,
+   "category": "fact",
+   "question": "Argus 后端基于哪个版本的 Spring Boot 开发？",
+   "latency": 1.76,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 3,
+   "category": "fact",
+   "question": "Argus 平台的默认服务端口是多少？",
+   "latency": 1.47,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 2,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 4,
+   "category": "fact",
+   "question": "Argus 支持上传哪些文档格式？",
+   "latency": 2.88,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 5,
+   "category": "fact",
+   "question": "单个文档的大小限制是多少？",
+   "latency": 1.33,
+   "retrieved": [
+    "argus平台概述.md",
+    "etl可靠性设计.md",
+    "mysql迁移规范.md",
+    "权限模型说明.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 6,
+   "category": "fact",
+   "question": "Argus 平台由哪五大核心模块组成？",
+   "latency": 2.89,
+   "retrieved": [
+    "argus平台概述.md",
+    "术语表.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 7,
+   "category": "fact",
+   "question": "PostgreSQL 的 groups 表迁移到 MySQL 时要改成什么表名？为什么？",
+   "latency": 1.9,
+   "retrieved": [
+    "mysql迁移规范.md",
+    "产品路线图.md",
+    "术语表.md",
+    "权限模型说明.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": false
+  },
+  {
+   "id": 8,
+   "category": "fact",
+   "question": "MySQL 迁移时 BIGSERIAL 类型映射成什么？",
+   "latency": 1.63,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "mysql迁移规范.md",
+    "产品路线图.md",
+    "术语表.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": false
+  },
+  {
+   "id": 9,
+   "category": "fact",
+   "question": "MySQL 迁移时 JSONB 类型映射成什么？",
+   "latency": 1.48,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "mysql迁移规范.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 10,
+   "category": "fact",
+   "question": "MySQL 业务库使用什么字符集和排序规则？",
+   "latency": 1.7,
+   "retrieved": [
+    "mysql迁移规范.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 11,
+   "category": "fact",
+   "question": "MySQL 迁移时 ON CONFLICT DO UPDATE 语法要转换成什么？",
+   "latency": 1.36,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "mysql迁移规范.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 12,
+   "category": "fact",
+   "question": "文档处理任务有哪五个状态？",
+   "latency": 1.95,
+   "retrieved": [
+    "argus平台概述.md",
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 13,
+   "category": "fact",
+   "question": "ETL 失败后的重试策略是什么？最多重试几次？",
+   "latency": 2.57,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "术语表.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 14,
+   "category": "fact",
+   "question": "上传环节用什么哈希算法做秒传判断？",
+   "latency": 1.44,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 15,
+   "category": "fact",
+   "question": "运行期的僵尸文档回收调度器每隔多久执行一次？只回收满足什么条件的文档？",
+   "latency": 2.65,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 16,
+   "category": "fact",
+   "question": "文档切片的基线参数（目标长度、最大长度、重叠）分别是多少？",
+   "latency": 1.89,
+   "retrieved": [
+    "argus平台概述.md",
+    "etl可靠性设计.md",
+    "mysql迁移规范.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 17,
+   "category": "fact",
+   "question": "向量检索的 Top-K 是多少？",
+   "latency": 1.35,
+   "retrieved": [
+    "产品路线图.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 18,
+   "category": "fact",
+   "question": "送入大模型的证据切片数量上限是多少？",
+   "latency": 1.7,
+   "retrieved": [
+    "argus平台概述.md",
+    "etl可靠性设计.md",
+    "权限模型说明.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 19,
+   "category": "fact",
+   "question": "向量 embedding 用的是什么模型？输出维度是多少？",
+   "latency": 2.22,
+   "retrieved": [
+    "argus平台概述.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 20,
+   "category": "fact",
+   "question": "证据不足时系统返回什么拒答原因码？",
+   "latency": 1.7,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "权限模型说明.md",
+    "检索质量规范.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": false
+  },
+  {
+   "id": 21,
+   "category": "fact",
+   "question": "平台有哪三类系统角色？",
+   "latency": 1.76,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": false
+  },
+  {
+   "id": 22,
+   "category": "fact",
+   "question": "跨群组访问文档会被服务端如何处理？",
+   "latency": 2.49,
+   "retrieved": [
+    "argus平台概述.md",
+    "etl可靠性设计.md",
+    "mysql迁移规范.md",
+    "权限模型说明.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 23,
+   "category": "fact",
+   "question": "哪三类操作必须记录审计日志？",
+   "latency": 1.59,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 24,
+   "category": "fact",
+   "question": "Argus 依赖的基础设施组件有哪五个？",
+   "latency": 2.64,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 25,
+   "category": "fact",
+   "question": "MinIO 的 API 和控制台端口分别是多少？",
+   "latency": 1.64,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "检索质量规范.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 26,
+   "category": "fact",
+   "question": "后端健康检查端点是什么？",
+   "latency": 1.36,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 27,
+   "category": "fact",
+   "question": "系统每天几点执行 MinIO 临时分片清理？保留多少天？",
+   "latency": 1.54,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 28,
+   "category": "fact",
+   "question": "数据库备份是什么时候执行的？保留多久？",
+   "latency": 1.37,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "mysql迁移规范.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 2,
+   "answer_keyword_hit": false
+  },
+  {
+   "id": 29,
+   "category": "fact",
+   "question": "后端启动失败的常见原因有哪些？",
+   "latency": 2.99,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": false
+  },
+  {
+   "id": 30,
+   "category": "fact",
+   "question": "IK 分词器有哪两种分词模式？Argus 索引默认用哪种？",
+   "latency": 2.04,
+   "retrieved": [
+    "argus平台概述.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": false
+  },
+  {
+   "id": 31,
+   "category": "term",
+   "question": "什么是 RAG？",
+   "latency": 3.22,
+   "retrieved": [
+    "argus平台概述.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 32,
+   "category": "term",
+   "question": "RRF 是什么算法？它有什么用？",
+   "latency": 3.72,
+   "retrieved": [
+    "argus平台概述.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 33,
+   "category": "term",
+   "question": "pgvector 是什么？Argus 用它做什么？",
+   "latency": 2.95,
+   "retrieved": [
+    "argus平台概述.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 34,
+   "category": "term",
+   "question": "HNSW 的全称是什么？它适合什么规模的数据？",
+   "latency": 2.58,
+   "retrieved": [
+    "产品路线图.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 35,
+   "category": "term",
+   "question": "Argus 中的 ETL 流水线包含哪些阶段？",
+   "latency": 3.33,
+   "retrieved": [
+    "argus平台概述.md",
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "术语表.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 3,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 36,
+   "category": "term",
+   "question": "IK 分词器是什么？",
+   "latency": 2.64,
+   "retrieved": [
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 37,
+   "category": "term",
+   "question": "向量检索用什么距离度量？基于什么索引结构加速？",
+   "latency": 2.06,
+   "retrieved": [
+    "mysql迁移规范.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 38,
+   "category": "term",
+   "question": "秒传是什么意思？它的判断依据是什么？",
+   "latency": 2.72,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "术语表.md",
+    "检索质量规范.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 2,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 39,
+   "category": "cross",
+   "question": "MySQL 迁移和 ETL 状态机改造分别在哪个季度完成？迁移涉及多少张表？",
+   "latency": 2.45,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "mysql迁移规范.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 40,
+   "category": "cross",
+   "question": "混合检索上线后 Recall@10 从多少提升到多少？这是哪个季度的事？",
+   "latency": 1.82,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "术语表.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 41,
+   "category": "cross",
+   "question": "Q3 的性能目标是什么？",
+   "latency": 1.55,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 42,
+   "category": "cross",
+   "question": "Q4 计划发布哪两个功能？",
+   "latency": 1.62,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 43,
+   "category": "cross",
+   "question": "Argus 的向量库和关键词检索分别用什么组件实现？两者如何配合？",
+   "latency": 3.8,
+   "retrieved": [
+    "argus平台概述.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 2,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 44,
+   "category": "cross",
+   "question": "重新处理文档前需要清理哪些中间产物？",
+   "latency": 1.81,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "mysql迁移规范.md",
+    "检索质量规范.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 45,
+   "category": "cross",
+   "question": "平台的全年团队数目标是从多少增长到多少？",
+   "latency": 1.58,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 46,
+   "category": "cross",
+   "question": "系统管理员、群组管理员、普通成员各自能做什么？",
+   "latency": 4.54,
+   "retrieved": [
+    "argus平台概述.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": true,
+   "reasonCode": null,
+   "retrieval_hit": true,
+   "mrr_rank": 1,
+   "answer_keyword_hit": true
+  },
+  {
+   "id": 47,
+   "category": "unanswerable",
+   "question": "Argus 平台的 CEO 是谁？",
+   "latency": 1.78,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "权限模型说明.md",
+    "部署运维手册.md"
+   ],
+   "answered": false,
+   "reasonCode": "INSUFFICIENT_EVIDENCE",
+   "refusal_correct": true
+  },
+  {
+   "id": 48,
+   "category": "unanswerable",
+   "question": "Argus 平台 2026 年的营业收入是多少？",
+   "latency": 2.69,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "术语表.md",
+    "部署运维手册.md"
+   ],
+   "answered": false,
+   "reasonCode": "INSUFFICIENT_EVIDENCE",
+   "refusal_correct": true
+  },
+  {
+   "id": 49,
+   "category": "unanswerable",
+   "question": "公司食堂的午餐菜单是什么？",
+   "latency": 1.65,
+   "retrieved": [
+    "argus平台概述.md",
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": false,
+   "reasonCode": "NO_EVIDENCE",
+   "refusal_correct": true
+  },
+  {
+   "id": 50,
+   "category": "unanswerable",
+   "question": "如何申请 Argus 平台的退款？",
+   "latency": 2.07,
+   "retrieved": [
+    "argus平台概述.md",
+    "mysql迁移规范.md",
+    "产品路线图.md",
+    "术语表.md",
+    "权限模型说明.md"
+   ],
+   "answered": false,
+   "reasonCode": "INSUFFICIENT_EVIDENCE",
+   "refusal_correct": true
+  },
+  {
+   "id": 51,
+   "category": "permission",
+   "question": "高级工程师的月薪范围是多少？",
+   "latency": 1.66,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "术语表.md",
+    "检索质量规范.md"
+   ],
+   "answered": false,
+   "reasonCode": "INSUFFICIENTEVIDENCE",
+   "leaked": false,
+   "refusal_correct": true
+  },
+  {
+   "id": 52,
+   "category": "permission",
+   "question": "绩效 S 级员工的年终奖是几个月工资？",
+   "latency": 1.95,
+   "retrieved": [
+    "etl可靠性设计.md",
+    "产品路线图.md",
+    "术语表.md",
+    "部署运维手册.md"
+   ],
+   "answered": false,
+   "reasonCode": "INSUFFICIENT_EVIDENCE",
+   "leaked": false,
+   "refusal_correct": true
+  },
+  {
+   "id": 53,
+   "category": "permission",
+   "question": "代号猎鹰的产品预计售价多少？",
+   "latency": 1.93,
+   "retrieved": [
+    "产品路线图.md",
+    "术语表.md",
+    "部署运维手册.md"
+   ],
+   "answered": false,
+   "reasonCode": "INSUFFICIENT_EVIDENCE",
+   "leaked": false,
+   "refusal_correct": true
+  },
+  {
+   "id": 54,
+   "category": "permission",
+   "question": "公司并购晨星计划的预算上限是多少？",
+   "latency": 2.27,
+   "retrieved": [
+    "argus平台概述.md",
+    "mysql迁移规范.md",
+    "产品路线图.md",
+    "部署运维手册.md"
+   ],
+   "answered": false,
+   "reasonCode": "INSUFFICIENT_EVIDENCE",
+   "leaked": false,
+   "refusal_correct": true
+  },
+  {
+   "id": 55,
+   "category": "permission",
+   "question": "代号蓝鲸的向量数据库一体机卖多少钱？",
+   "latency": 1.84,
+   "retrieved": [
+    "产品路线图.md",
+    "术语表.md",
+    "检索质量规范.md",
+    "部署运维手册.md"
+   ],
+   "answered": false,
+   "reasonCode": "INSUFFICIENTEVIDENCE",
+   "leaked": false,
+   "refusal_correct": true
+  },
+  {
+   "id": 56,
+   "category": "permission",
+   "question": "架构师的薪酬带宽上限是多少？",
+   "latency": 1.81,
+   "retrieved": [
+    "argus平台概述.md",
+    "产品路线图.md",
+    "检索质量规范.md",
+    "部署运维手册.md"
+   ],
+   "answered": false,
+   "reasonCode": "INSUFFICIENTEVIDENCE",
+   "leaked": false,
+   "refusal_correct": true
+  }
+ ]
+}

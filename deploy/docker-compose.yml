@@ -1,0 +1,145 @@
+# =====================================================================
+# Argus RAG 平台一键部署（MySQL + PG/pgvector + MinIO + ES/IK + 后端）
+# 使用：cp .env.example .env && 修改密码后执行 docker compose up -d
+# =====================================================================
+name: argus-rag
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: argus-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: argus_rag
+      TZ: Asia/Shanghai
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --default-time-zone=+08:00
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../sql/schema-mysql.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: argus-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${VECTOR_DB_USER}
+      POSTGRES_PASSWORD: ${VECTOR_DB_PASSWORD}
+      POSTGRES_DB: argus_rag_vector
+    ports:
+      - "${VECTOR_DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../sql/schema-pgvector.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${VECTOR_DB_USER} -d argus_rag_vector"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    container_name: argus-minio
+    restart: unless-stopped
+    command: server /data --address ":9000" --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+  elasticsearch:
+    build:
+      context: elasticsearch
+      dockerfile: Dockerfile.es
+    image: argus-es-ik:8.14.3
+    container_name: argus-es
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      TZ: Asia/Shanghai
+    ports:
+      - "${ES_PORT:-9200}:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:9200/_cluster/health | grep -qE 'yellow|green'"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+
+  backend:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: argus-backend:latest
+    container_name: argus-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      # ---- MySQL 主库 ----
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/argus_rag?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # ---- pgvector 向量库 ----
+      VECTOR_DB_HOST: postgres
+      VECTOR_DB_PORT: 5432
+      VECTOR_DB_NAME: argus_rag_vector
+      VECTOR_DB_USER: ${VECTOR_DB_USER}
+      VECTOR_DB_USERNAME: ${VECTOR_DB_USER}
+      VECTOR_DB_PASSWORD: ${VECTOR_DB_PASSWORD}
+      # ---- MinIO ----
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET: argus-rag-documents
+      # ---- Elasticsearch ----
+      ES_HOST: elasticsearch
+      ES_PORT: 9200
+      ES_SCHEME: http
+      # ---- DashScope ----
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY}
+      # ---- JWT ----
+      ARGUS_RAG_JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "${BACKEND_PORT:-10001}:10001"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:10001/actuator/health | grep -q UP"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+
+volumes:
+  mysql-data:
+  pgdata:
+  minio-data:
+  esdata:

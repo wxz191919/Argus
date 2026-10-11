@@ -62,6 +62,9 @@ public class ElasticsearchChunkIndexService {
     /** HTTP 请求超时时间，平衡响应速度和 ES 集群压力 */
     private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(5);
 
+    /** 索引创建后等待分片就绪的最长秒数（cluster health wait_for_status） */
+    private static final int INDEX_READY_WAIT_SECONDS = 30;
+
     /** 关键词分数归一化的参考基准值，用于对数变换 */
     private static final double KEYWORD_SCORE_REFERENCE = 100D;
 
@@ -357,10 +360,56 @@ public class ElasticsearchChunkIndexService {
      * <p>
      * 调用 {@link #buildCreateIndexRequestBody} 生成索引定义 JSON，
      * 包含 mappings 字段类型定义和 analysis 分词器配置。
+     * <p>
+     * 创建成功后调用 {@link #waitForIndexReady()} 等待分片真正就绪——
+     * 索引刚创建时分片可能仍处于 initializing 状态，立刻 bulk 写入会收到
+     * 503（unavailable shards），该问题在首次 ETL 时尤其常见。
      */
     private void createIndex() {
         sendJsonRequest("PUT", "/%s".formatted(indexName), buildCreateIndexRequestBody(), false);
+        waitForIndexReady();
         log.info("ES 索引初始化完成: {}", indexName);
+    }
+
+    /**
+     * 等待索引分片就绪（cluster health 达到 yellow 及以上）。
+     * <p>
+     * 通过 ES Cluster Health API 的 {@code wait_for_status=yellow} 实现——
+     * ES 会挂起该请求直到索引分片分配完成或超时，无需客户端轮询。
+     * <p>
+     * 超时（{@code timed_out=true}）时抛出 {@link BusinessException}，
+     * 由外层 ETL 的 {@code @Retryable} 退避重试整个流程，避免向未就绪分片
+     * 写入 bulk 而收到 503。等待期间若 ES 不可达，同样抛出异常走重试。
+     *
+     * @throws BusinessException 等待超时或 ES 通信失败
+     */
+    private void waitForIndexReady() {
+        String path = "/_cluster/health/%s?wait_for_status=yellow&timeout=%ds"
+                .formatted(indexName, INDEX_READY_WAIT_SECONDS);
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl + path))
+                    .timeout(Duration.ofSeconds(INDEX_READY_WAIT_SECONDS + 5))
+                    .header("Content-Type", "application/json")
+                    .GET()
+                    .build();
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                throw new BusinessException("ES 索引就绪检查失败: " + response.statusCode() + ", body=" + response.body());
+            }
+            JsonNode root = objectMapper.readTree(response.body());
+            if (root.path("timed_out").asBoolean(true)) {
+                throw new BusinessException(
+                        "ES 索引分片在 %d 秒内未就绪: %s".formatted(INDEX_READY_WAIT_SECONDS, indexName));
+            }
+            log.info("ES 索引分片就绪: index={}, status={}", indexName, root.path("status").asText());
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            throw new BusinessException("ES 索引就绪等待被中断", exception);
+        } catch (IOException exception) {
+            throw new BusinessException("ES 索引就绪等待失败", exception);
+        }
     }
 
     /**

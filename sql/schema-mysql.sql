@@ -361,3 +361,20 @@ CREATE TABLE IF NOT EXISTS qa_record_citations (
     CONSTRAINT fk_qa_record_citation_record FOREIGN KEY (qa_record_id) REFERENCES qa_records (id) ON DELETE CASCADE,
     KEY idx_qa_record_citations_record (qa_record_id, id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'QA 引用快照表，保存回答时实际使用的检索证据';
+
+-- ============================================================
+-- QA 问答反馈表（阶段 8：问答反馈闭环）
+-- ============================================================
+CREATE TABLE IF NOT EXISTS qa_feedback (
+    id            BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    record_id     BIGINT       NOT NULL COMMENT '关联 qa_records.id',
+    user_id       BIGINT       NOT NULL COMMENT '反馈用户 ID',
+    group_id      BIGINT       NOT NULL COMMENT '问答所属群组 ID（冗余，便于按群统计）',
+    feedback_type VARCHAR(16)  NOT NULL COMMENT '反馈类型：LIKE/DISLIKE',
+    reason        VARCHAR(255) NULL COMMENT '点踩原因（可空）',
+    created_at    DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+    updated_at    DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_record_user (record_id, user_id),
+    KEY idx_group_type (group_id, feedback_type)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'QA 问答反馈表，点赞/点踩与低质原因收集';

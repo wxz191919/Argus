@@ -32,3 +32,26 @@ mybatis-plus:
     # 当前项目所有枚举均为简单枚举（无 @EnumValue），按 name 存储最安全
     default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
 
+# ──────────────────────────────────────────────
+# 可观测性（阶段 6）
+# ──────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        # 暴露健康检查、指标、线程转储端点，供运维监控与容量评估使用
+        include: health,info,metrics,threaddump
+  endpoint:
+    health:
+      # 健康检查中展示各组件（数据源/磁盘等）明细
+      show-details: when-authorized
+  observations:
+    key-values:
+      # 所有 Metrics 打上应用标识，便于接入 Prometheus/Grafana 时区分来源
+      application: argus-rag
+
+# 慢 SQL 拦截阈值（毫秒）：执行超过该时长的 SQL 记录 WARN 日志
+argus:
+  observability:
+    slow-sql-threshold-ms: 1000
+

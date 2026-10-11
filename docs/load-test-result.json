@@ -1,0 +1,58 @@
+{
+ "timestamp": "2026-10-11 09:44:06",
+ "env": "local单机(4C/ES/PG/MySQL同机)",
+ "results": [
+  {
+   "scenario": "S1-登录",
+   "concurrency": 30,
+   "requests": 300,
+   "error_count": 0,
+   "error_rate": 0.0,
+   "rps": 5.0,
+   "p50_ms": 5803.4,
+   "p95_ms": 6560.4,
+   "p99_ms": 6635.4,
+   "mean_ms": 5758.8,
+   "wall_s": 60.39
+  },
+  {
+   "scenario": "S2-群组列表",
+   "concurrency": 30,
+   "requests": 300,
+   "error_count": 0,
+   "error_rate": 0.0,
+   "rps": 318.5,
+   "p50_ms": 74.8,
+   "p95_ms": 138.3,
+   "p99_ms": 184.9,
+   "mean_ms": 76.5,
+   "wall_s": 0.94
+  },
+  {
+   "scenario": "S3-文档列表",
+   "concurrency": 30,
+   "requests": 300,
+   "error_count": 0,
+   "error_rate": 0.0,
+   "rps": 312.9,
+   "p50_ms": 75.3,
+   "p95_ms": 149.5,
+   "p99_ms": 189.5,
+   "mean_ms": 77.7,
+   "wall_s": 0.96
+  },
+  {
+   "scenario": "S4-健康检查",
+   "concurrency": 30,
+   "requests": 300,
+   "error_count": 0,
+   "error_rate": 0.0,
+   "rps": 466.9,
+   "p50_ms": 52.7,
+   "p95_ms": 101.1,
+   "p99_ms": 128.5,
+   "mean_ms": 53.9,
+   "wall_s": 0.64
+  }
+ ]
+}

@@ -1,0 +1,110 @@
+[
+ {
+  "case": "未登录访问-[群组列表]",
+  "expect": "401",
+  "result": "PASS",
+  "detail": "HTTP 401"
+ },
+ {
+  "case": "未登录访问-[文档列表]",
+  "expect": "401",
+  "result": "PASS",
+  "detail": "HTTP 401"
+ },
+ {
+  "case": "未登录访问-[知识问答]",
+  "expect": "401",
+  "result": "PASS",
+  "detail": "HTTP 401"
+ },
+ {
+  "case": "未登录访问-[文档下载]",
+  "expect": "401",
+  "result": "PASS",
+  "detail": "HTTP 401"
+ },
+ {
+  "case": "伪造 JWT 访问群组列表",
+  "expect": "401",
+  "result": "PASS",
+  "detail": "HTTP 401"
+ },
+ {
+  "case": "跨群读取文档列表",
+  "expect": "403/不可见",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "跨群问答（问机密薪酬）",
+  "expect": "403/拒绝",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "跨群预览机密文档(id=12)",
+  "expect": "403",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "跨群下载机密文档(id=12)",
+  "expect": "403",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "跨群删除机密文档(id=12)",
+  "expect": "403",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "跨群读取成员列表",
+  "expect": "403",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "非成员读取文档列表",
+  "expect": "403/不可见",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "非成员发起问答",
+  "expect": "403/拒绝",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "非成员删除他人群组文档",
+  "expect": "403",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "伪造文档 ID 预览",
+  "expect": "4xx",
+  "result": "PASS",
+  "detail": "success=false(文档不存在或已删除)"
+ },
+ {
+  "case": "伪造群组 ID 删除",
+  "expect": "4xx",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "伪造群组 ID 问答",
+  "expect": "4xx",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ },
+ {
+  "case": "外人向评测群发邀请",
+  "expect": "403",
+  "result": "PASS",
+  "detail": "success=false(当前用户不是目标群组成员)"
+ }
+]
